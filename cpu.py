@@ -65,6 +65,8 @@ class CPU:
         self.ops[RET] = self.ret
         self.ops[ST] = self.st
         self.ops[JMP] = self.jmp
+        self.ops[JEQ] = self.jeq
+        self.ops[JNE] = self.jne
 
 
     def load(self, file_name):
@@ -135,6 +137,20 @@ class CPU:
     def jmp(self, reg_num):
         self.pc = self.reg[reg_num]
 
+    def jeq(self, reg_num):
+        equal = self.fl & 0b00000001
+        if equal:
+            self.pc = self.reg[reg_num]
+        else:
+            self.pc += 2
+
+    def jne(self, reg_num):
+        equal = self.fl & 0b00000001
+        if not equal:
+            self.pc = self.reg[reg_num]
+        else:
+            self.pc += 2
+
     def push(self, reg_num, inst):
         """Copy the value in the given register to the address pointed to by SP"""
         if self.reg[7] > 0:
@@ -199,7 +215,7 @@ class CPU:
                 x = self.ram_read(self.pc + 1)
             if inst_len > 2:
                 y = self.ram_read(self.pc + 2)
-
+            #breakpoint()
             if is_ALU:
                 self.alu(self.ops[ir], x, y)
                 self.pc += inst_len
