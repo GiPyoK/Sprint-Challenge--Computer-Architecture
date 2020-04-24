@@ -64,6 +64,7 @@ class CPU:
         self.ops[CALL] = self.call
         self.ops[RET] = self.ret
         self.ops[ST] = self.st
+        self.ops[JMP] = self.jmp
 
 
     def load(self, file_name):
@@ -130,6 +131,9 @@ class CPU:
         value = self.reg[reg_b]
         address = self.reg[reg_a]
         self.ram_write(address,value)
+    
+    def jmp(self, reg_num):
+        self.pc = self.reg[reg_num]
 
     def push(self, reg_num, inst):
         """Copy the value in the given register to the address pointed to by SP"""
