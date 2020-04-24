@@ -59,6 +59,13 @@ class CPU:
         self.ops[MUL] = "MUL"
         self.ops[ADD] = "ADD"
         self.ops[CMP] = "CMP"
+        self.ops[AND] = "AND"
+        self.ops[OR] = "OR"
+        self.ops[XOR] = "XOR"
+        self.ops[NOT] = "NOT"
+        self.ops[SHL] = "SHL"
+        self.ops[SHR] = "SHR"
+        self.ops[MOD] = "MOD"
         self.ops[PUSH] = self.push
         self.ops[POP] = self.pop
         self.ops[CALL] = self.call
@@ -100,6 +107,31 @@ class CPU:
                 self.fl = 0b00000010
             else:
                 self.fl = 0b00000100
+
+        elif op == "AND":
+            self.reg[reg_a] = self.reg[reg_a] & self.reg[reg_b]
+
+        elif op == "OR":
+            self.reg[reg_a] = self.reg[reg_a] | self.reg[reg_b]
+
+        elif op == "XOR":
+            self.reg[reg_a] = self.reg[reg_a] ^ self.reg[reg_b]
+
+        elif op == "NOT":
+            self.reg[reg_a] = ~self.reg[reg_a]
+
+        elif op == "SHL":
+            self.reg[reg_a] = self.reg[reg_a] << self.reg[reg_b]
+
+        elif op == "SHR":
+            self.reg[reg_a] = self.reg[reg_a] >> self.reg[reg_b]
+
+        elif op == "MOD":
+            if self.reg[reg_b] == 0:
+                print("Cannot divide by zero")
+                sys.exit()
+            
+            self.reg[reg_a] = self.reg[reg_a] % self.reg[reg_b]
 
         else:
             raise Exception("Unsupported ALU operation")
